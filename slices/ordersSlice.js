@@ -13,9 +13,9 @@ const initialState = {
   cancel: [],
 };
 
-// const base_url = "https://e-tpshop-backend.onrender.com";
+const base_url = "https://e-tpshop-backend.onrender.com";
 // const base_url = "http://192.168.0.108:5000";
-const base_url = "http://192.168.100.23:5000";
+// const base_url = "http://192.168.100.23:5000";
 
 export const fetchFinishOrder = createAsyncThunk(
   "order/fetchFinishOrder",
