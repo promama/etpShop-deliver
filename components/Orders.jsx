@@ -206,6 +206,9 @@ function Orders(props) {
       {props.all && (
         <Button title="Take this order" onPress={takeOrder}></Button>
       )}
+      {props.availible && (
+        <Button title="Take this order" onPress={takeOrder}></Button>
+      )}
 
       {/* delivering page choose and send image */}
       {props.delivering && (

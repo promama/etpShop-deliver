@@ -87,7 +87,7 @@ function MyNavBar() {
             backgroundColor: "red",
           }}
         >
-          <Text className="text-white items-center ml-1.5">{unreadNotify}</Text>
+          <Text className="text-white items-center">{unreadNotify}</Text>
         </View>
         <Text>Notify</Text>
       </Pressable>

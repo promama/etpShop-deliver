@@ -11,12 +11,33 @@ const initialState = {
   delivering: [],
   success: [],
   cancel: [],
+  singleOrderDetail: {},
 };
 
-//const base_url = "https://e-tpshop-backend.onrender.com";
+const base_url = "https://e-tpshop-backend.onrender.com";
 //const base_url = "http://192.168.0.108:5000";
 //const base_url = "http://172.16.30.66:5000";
-const base_url = "http://192.168.100.23:5000";
+// const base_url = "http://192.168.100.23:5000";
+
+export const fetchShowOrderDetail = createAsyncThunk(
+  "order/fetchShowOrderDetail",
+  async (userInfos, { rejectWithValue }) => {
+    try {
+      const res = await axios.request({
+        headers: {
+          Authorization: `Bearer ${userInfos.access_token}`,
+        },
+        data: { email: userInfos.email, orderId: userInfos.orderId },
+        method: "POST",
+        // url: `http://${ip_address}:5000/user/verify`,
+        url: `${base_url}/deliver/showOrderDetail`,
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 export const fetchFinishOrder = createAsyncThunk(
   "order/fetchFinishOrder",
@@ -285,6 +306,20 @@ const ordersSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(fetchShowCancelOrder.rejected, (state, action) => {
+      state.status = "fail";
+      state.isLoading = false;
+    });
+
+    //show order detail
+    builder.addCase(fetchShowOrderDetail.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchShowOrderDetail.fulfilled, (state, action) => {
+      state.status = "success";
+      state.singleOrderDetail = action.payload.listOrder[0];
+      state.isLoading = false;
+    });
+    builder.addCase(fetchShowOrderDetail.rejected, (state, action) => {
       state.status = "fail";
       state.isLoading = false;
     });

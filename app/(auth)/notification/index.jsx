@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Pressable,
@@ -8,11 +8,23 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchReadNofication,
+  fetchShowAllNotification,
+} from "../../../slices/userSlice";
 
 function index() {
   const listNotify = useSelector((state) => state.user.notificationList);
   const unreadNotify = useSelector((state) => state.user.unreadNotify);
+  const access_token = useSelector((state) => state.user.token);
+  const email = useSelector((state) => state.user.email);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //load notification and unread notify
+    dispatch(fetchShowAllNotification({ access_token, email }));
+  }, [dispatch]);
   return (
     <View style={{ flex: 1 }} className="bg-teal-100">
       <ScrollView className="mt-10 ml-5 mr-5">
@@ -47,7 +59,16 @@ function index() {
             return (
               <Pressable
                 key={noti._id}
-                onPress={() => router.push(`purchases/${noti.orderId}`)}
+                onPress={() => {
+                  dispatch(
+                    fetchReadNofication({
+                      access_token,
+                      email,
+                      orderId: noti.orderId,
+                    })
+                  );
+                  router.push(`notification/${noti.orderId}`);
+                }}
               >
                 <View
                   className="flex"
