@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShowOrderDetail } from "../../../slices/ordersSlice";
 import Orders from "../../../components/Orders";
@@ -12,6 +12,7 @@ function NotificationDetail() {
   );
   const access_token = useSelector((state) => state.user.token);
   const email = useSelector((state) => state.user.email);
+  const isLoading = useSelector((state) => state.orders.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,10 +23,14 @@ function NotificationDetail() {
       <ScrollView className="mt-10 ml-5 mr-5">
         {/* <Text>{JSON.stringify(singleOrderDetail)}</Text> */}
         <Text>Delivery infomation:</Text>
-        <Orders
-          orders={singleOrderDetail}
-          availible={singleOrderDetail.availible}
-        ></Orders>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="blue" />
+        ) : (
+          <Orders
+            orders={singleOrderDetail}
+            availible={singleOrderDetail.availible}
+          ></Orders>
+        )}
       </ScrollView>
     </View>
   );

@@ -1,6 +1,12 @@
-import { router, Slot } from "expo-router";
 import React, { useEffect } from "react";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeNotify,
@@ -8,7 +14,6 @@ import {
   fetchVerify,
   reset,
 } from "../../slices/userSlice";
-import { socket } from "../../components/socket";
 import {
   changeAllOrderList,
   fetchAllOrders,
@@ -21,6 +26,8 @@ function index() {
   const access_token = useSelector((state) => state.user.token);
   const email = useSelector((state) => state.user.email);
   const orders = useSelector((state) => state.orders.orders);
+  const isLoading = useSelector((state) => state.orders.isLoading);
+
   //load all deliverable orders
   useEffect(() => {
     try {
@@ -37,7 +44,7 @@ function index() {
   return (
     <View style={{ flex: 1 }} className="bg-teal-100">
       <ScrollView className="mt-10 ml-5 mr-5">
-        <Text>index page</Text>
+        <Text style={{ fontSize: 23, color: "blue" }}>Home page</Text>
         <Pressable
           onPress={() => {
             dispatch(resetOrders());
@@ -46,19 +53,35 @@ function index() {
         >
           <Text>log out</Text>
         </Pressable>
-        {orders.length == 0 && (
-          <Text>There are no new order to take, please comeback later</Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="blue" />
+        ) : orders.length == 0 ? (
+          <View>
+            <Text style={{ color: "orange", fontSize: 18 }}>
+              There are no new order to take, please comeback later
+            </Text>
+            <Image
+              source={{
+                uri: "https://res.cloudinary.com/promama/image/upload/v1734536163/empty-cart_dichne.png",
+              }}
+              style={{
+                width: "100%",
+                aspectRatio: 1,
+              }}
+            ></Image>
+          </View>
+        ) : (
+          orders
+            ?.slice(0)
+            .reverse()
+            .map((order) => {
+              return (
+                <View key={order.orderId}>
+                  <Orders orders={order} all={true} />
+                </View>
+              );
+            })
         )}
-        {orders
-          ?.slice(0)
-          .reverse()
-          .map((order) => {
-            return (
-              <View key={order.orderId}>
-                <Orders orders={order} all={true} />
-              </View>
-            );
-          })}
       </ScrollView>
     </View>
   );

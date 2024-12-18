@@ -18,7 +18,8 @@ const initialState = {
 //const base_url = "http://192.168.0.108:5000";
 //const base_url = "http://172.16.30.66:5000";
 // const base_url = "http://172.21.22.135:5000";
-const base_url = "http://192.168.184.142:5000";
+// const base_url = "http://192.168.184.142:5000";
+const base_url = "http://192.168.100.13:5000";
 
 export const fetchShowOrderDetail = createAsyncThunk(
   "order/fetchShowOrderDetail",
@@ -198,9 +199,13 @@ const ordersSlice = createSlice({
     },
     setMyDeliverOrder: (state, action) => {
       state.delivering = action.payload.listOrder;
+      state.isLoading = false;
     },
     changeAllOrderList: (state, action) => {
       state.orders = action.payload.listOrder;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -327,7 +332,11 @@ const ordersSlice = createSlice({
   },
 });
 
-export const { resetOrders, setMyDeliverOrder, changeAllOrderList } =
-  ordersSlice.actions;
+export const {
+  resetOrders,
+  setMyDeliverOrder,
+  changeAllOrderList,
+  setLoading,
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;

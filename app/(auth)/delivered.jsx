@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSuccessOrder } from "../../slices/ordersSlice";
 import Orders from "../../components/Orders";
@@ -9,6 +9,7 @@ function delivered() {
   const access_token = useSelector((state) => state.user.token);
   const email = useSelector((state) => state.user.email);
   const orders = useSelector((state) => state.orders.success);
+  const isLoading = useSelector((state) => state.orders.isLoading);
 
   useEffect(() => {
     try {
@@ -18,19 +19,25 @@ function delivered() {
     }
   }, [dispatch]);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} className="bg-teal-100">
       <ScrollView className="mt-10 ml-5 mr-5">
-        <Text>Success delivered page</Text>
-        {orders
-          ?.slice(0)
-          .reverse()
-          .map((order) => {
-            return (
-              <View key={order.orderId}>
-                <Orders orders={order} success={true} />
-              </View>
-            );
-          })}
+        <Text style={{ fontSize: 23, color: "blue" }}>
+          Success delivered page
+        </Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="blue" />
+        ) : (
+          orders
+            ?.slice(0)
+            .reverse()
+            .map((order) => {
+              return (
+                <View key={order.orderId}>
+                  <Orders orders={order} success={true} />
+                </View>
+              );
+            })
+        )}
       </ScrollView>
     </View>
   );
