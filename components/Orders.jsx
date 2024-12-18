@@ -91,7 +91,7 @@ function Orders(props) {
       // const result = await dispatch(fetchFinishOrder(data)).unwrap();
       //change ip
       const res = await FileSystem.uploadAsync(
-        "http://192.168.100.23:5000/deliver/uploadImage",
+        "http://192.168.184.142:5000/deliver/uploadImage",
         image,
         {
           uploadType: FileSystem.FileSystemUploadType.MULTIPART,

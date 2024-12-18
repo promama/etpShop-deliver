@@ -14,10 +14,11 @@ const initialState = {
   singleOrderDetail: {},
 };
 
-const base_url = "https://e-tpshop-backend.onrender.com";
+// const base_url = "https://e-tpshop-backend.onrender.com";
 //const base_url = "http://192.168.0.108:5000";
 //const base_url = "http://172.16.30.66:5000";
-// const base_url = "http://192.168.100.23:5000";
+// const base_url = "http://172.21.22.135:5000";
+const base_url = "http://192.168.184.142:5000";
 
 export const fetchShowOrderDetail = createAsyncThunk(
   "order/fetchShowOrderDetail",
